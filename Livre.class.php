@@ -7,6 +7,7 @@ class Livre {
     private $nbPage;
     private $image;
 
+
     public function __construct($id, $titre, $nbPage, $image){
         $this->id = $id;
         $this->titre = $titre;
