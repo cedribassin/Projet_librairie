@@ -1,0 +1,9 @@
+#On procède à la réécriture d'url
+RewriteEngine On
+
+#Syntaxes qui empeche d'aller dans les fichiers -f et les dossier -d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+#On indique qu'on veut réécrire toutes nos url
+RewriteRule ^(.*)$ index.php?page=$1
