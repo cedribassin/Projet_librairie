@@ -1,10 +1,11 @@
 <?php 
-require_once "Livre.class.php";
-require_once "LivreManager.class.php";
+require_once "models/Livre.class.php";
 
-$livreManager = new LivreManager; // Cette syntaxe fonctionne uniquement parce que le constructeur est vide
-$livreManager->recupLivresBdd();
-
+// On retire cette partie pour la placer dans LivresController.controller.php
+/* require_once "LivreManager.class.php";
+$livreManager = new LivreManager; => dans le constructeur
+$livreManager->recupLivresBdd();  => dans le constructeur
+ */
 ob_start()?>
 
 <table class="table text-center">
@@ -16,7 +17,10 @@ ob_start()?>
         <th colspan="2">Actions</th>
     </tr>
     <?php 
-    $livres=$livreManager->getLivres();//=> On récupère le tableau de $livre dans LivreManager
+   /*  On retire cette partie pour la mettre dans LivresController.controller au niveau de la fonction
+       afficherLivres()
+   $livres=$livreManager->getLivres();//=> On récupère le tableau de $livre dans LivreManager 
+   */
     for($i=0; $i<count($livres); $i++){
     ?>
     <tr>
