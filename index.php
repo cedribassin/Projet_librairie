@@ -29,7 +29,7 @@ try{
                 if(empty($url[1])){
                     $livresController->afficherLivres();
                 } else if($url[1]==="l"){
-                    echo "affichage d'un livre";
+                    echo $livresController->afficherUnLivre($url[2]);
                 } else if($url[1]==="a"){
                     echo "ajouter un livre";
                 } else if($url[1]==="s"){

@@ -5,7 +5,7 @@ require_once "Livre.class.php";
 
 class LivreManager extends Model {
 
-    private $livres;
+    private $livres;//Tableau de livres
 
     //Ici "il n'y a pas le constructeur" car celui-ci est vide donc cela revient
     // au même que si on l'avait écrit sans rien
@@ -35,6 +35,16 @@ class LivreManager extends Model {
             $this->ajoutLivre($ouvrage);
         }
 
+    }
+
+    public function getLivreById($id){
+         for($i=0; $i<count($this->livres); $i++){
+             //On vérifie si le getteur de Id est === à $id et on retourne le livre
+             // avec le bon id
+            if($this->livres[$i]->getId() === $id){
+                return $this->livres[$i];
+            }
+         }
     }
 
 }

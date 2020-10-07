@@ -25,7 +25,8 @@ ob_start()?>
     ?>
     <tr>
         <td><img src="public/images/<?= $livres[$i]->getImage();?>" alt="<?=$livres[$i]->getTitre(); ?>" style="max-height:125px"/></td>
-        <td class="align-middle"><?= $livres[$i]->getTitre() ?></td>
+        <!-- On rajoute un lien pour les titre qui donne accès au livre sélectionné -->
+        <td class="align-middle"><a href="<?=URL?>livres/l/<?= $livres[$i]->getId();?>"> <?= $livres[$i]->getTitre() ?></td>
         <td class="align-middle"><?= $livres[$i]->getNbPage() ?></td>
         <td class="align-middle"><a href="" class="btn btn-warning">Modifier</a></td>
         <td class="align-middle"><a href="" class="btn btn-danger">Supprimer</a></td>

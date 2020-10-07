@@ -22,6 +22,14 @@ class LivresController{
         require "views/livres.view.php";
     }
 
+    //Fonction qui permet de récupérer un livre
+    public function afficherUnLivre($id){
+      //On utilise la fonction getLivreById() dans LivreManager pour récupérer 1 livre en BDD  
+      $livre = $this->livreManager->getLivreById($id);
+      //Necessite un nouvel affichage réalisé dans afficherUnLivre.view.php
+      require "views/afficherUnLivre.view.php";
+    }
+
 }
 
 
