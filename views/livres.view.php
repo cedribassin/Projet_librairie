@@ -35,7 +35,7 @@ ob_start()?>
 
 </table> 
 <!--d-block permet d'avoir le bouton Ajouter sur toute la ligne-->
-<a href="" class="btn btn-success d-block">Ajouter</a>
+<a href="<?= URL ?>livres/a" class="btn btn-success d-block">Ajouter</a>
 
 <?php
 //$content récupère le contenu du buffer

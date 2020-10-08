@@ -30,7 +30,7 @@ class LivreManager extends Model {
 
         //On créer les objets livre issus de la bdd
         foreach($mesLivres as $livre){
-            $ouvrage= new Livre($livre['id_livre'], $livre['titre'], $livre['Nb_page'], $livre['image']);
+            $ouvrage= new Livre($livre['id_livre'], $livre['titre'], $livre['nbPages'], $livre['image']);
             //On les ajoute au tableau $livres via la fonction ajoutLivre()
             $this->ajoutLivre($ouvrage);
         }
@@ -45,6 +45,23 @@ class LivreManager extends Model {
                 return $this->livres[$i];
             }
          }
+    }
+
+    public function ajoutLivreBdd($titre, $nbPages, $image){
+        $req = "INSERT INTO livre (titre, nbPages, image) values (:titre, :nbPages, :image)";
+        $stmt = $this->getBDD()->prepare($req);
+        $stmt->bindValue(":titre", $titre, PDO::PARAM_STR);
+        $stmt->bindValue(":nbPages", $nbPages, PDO::PARAM_INT);
+        $stmt->bindValue(":image", $image, PDO::PARAM_STR);
+        $resultat = $stmt->execute();
+        $stmt->closeCursor();
+        //Une fois inséré en BDD, on le rajoute dans notre tableau de livres ($livres)
+        //On test si le résultat a retourné quelque chose, et si oui on crée notre livre dans $livres
+        if($resultat>0){
+            //lastInsertId permet de récupérer le dernier id créé en bdd
+            $livre = new Livre($this->getBdd()->lastInsertId(), $titre, $nbPages, $image);
+            $this->ajoutLivre($livre);
+        }
     }
 
 }
