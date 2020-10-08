@@ -28,8 +28,14 @@ ob_start()?>
         <!-- On rajoute un lien pour les titre qui donne accès au livre sélectionné -->
         <td class="align-middle"><a href="<?=URL?>livres/l/<?= $livres[$i]->getId();?>"> <?= $livres[$i]->getTitre() ?></td>
         <td class="align-middle"><?= $livres[$i]->getNbPage() ?></td>
-        <td class="align-middle"><a href="" class="btn btn-warning">Modifier</a></td>
-        <td class="align-middle"><a href="" class="btn btn-danger">Supprimer</a></td>
+        <td class="align-middle"><a href="<?=URL?>livres/m/<?= $livres[$i]->getId();?>" class="btn btn-warning">Modifier</a></td>
+        <td class="align-middle">
+            <!-- On déclare un form qui aura pour action de s'ouvrir sur l'url qui suit contenant l'id du livre à supprimer
+             , on complète avec une confirmation du clique en soumission avec une fonction JS confirm() -->
+            <form method="POST" action="<?=URL?>livres/s/<?= $livres[$i]->getId();?>" onSubmit="return confirm('voulez-vous vraiment supprimer le livre ?')";>
+                <button class="btn btn-danger" type="submit">Supprimer</button>
+            </form>
+        </td>
     </tr>
     <?php } ?>
 

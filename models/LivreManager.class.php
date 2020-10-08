@@ -47,6 +47,7 @@ class LivreManager extends Model {
          }
     }
 
+    //Fonction qui permet d'insérer un livre en BDD et dans le tableau $livres
     public function ajoutLivreBdd($titre, $nbPages, $image){
         $req = "INSERT INTO livre (titre, nbPages, image) values (:titre, :nbPages, :image)";
         $stmt = $this->getBDD()->prepare($req);
@@ -61,6 +62,39 @@ class LivreManager extends Model {
             //lastInsertId permet de récupérer le dernier id créé en bdd
             $livre = new Livre($this->getBdd()->lastInsertId(), $titre, $nbPages, $image);
             $this->ajoutLivre($livre);
+        }
+    }
+
+    public function suppressionLivreBdd($id){
+        $req = "DELETE from livre WHERE id_livre = :idLivre";
+        $stmt = $this->getBDD()->prepare($req);
+        $stmt->bindValue(":idLivre", $id, PDO::PARAM_INT);
+        $resultat = $stmt->execute();
+        $stmt->closeCursor();
+        //On vérifie que la suppression en BDD à fonctionné et on retire le livre du tableau $livres
+        // en utilisant la fonction unset()
+        if($resultat>0){
+            $livre = $this->getLivreById($id);
+            unset($livre);
+        }
+
+    }
+
+    //Fonction qui permet de modifier un livre en BDD et dans le tableau $livres
+    public function modificationLivreBdd($id, $titre, $nbPages, $image){
+        $req = "UPDATE livre SET titre = :titre, nbPages = :nbPages, image = :image WHERE id_livre = :id";
+        $stmt = $this->getBDD()->prepare($req);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->bindValue(":titre", $titre, PDO::PARAM_STR);
+        $stmt->bindValue(":nbPages", $nbPages, PDO::PARAM_INT);
+        $stmt->bindValue(":image", $image, PDO::PARAM_STR);
+        $resultat = $stmt->execute();
+        $stmt->closeCursor();
+        if($resultat > 0){
+            //On met à jour les résultat en utilisant les setters
+            $this->getLivreById($id)->setTitre($titre);
+            $this->getLivreById($id)->setNbPage($nbPages);
+            $this->getLivreById($id)->setImage($image);
         }
     }
 

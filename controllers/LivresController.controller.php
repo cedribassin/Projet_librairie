@@ -30,12 +30,12 @@ class LivresController{
       require "views/afficherUnLivre.view.php";
     }
 
-    //Fonction qui permet d'ajouter un livre
+    //Fonction qui permet d'accéder à la page d'ajout d'un livre
     public function ajouterUnLivre(){
         require "views/ajoutLivre.view.php";
     }
 
-    //Fonction qui permet de valider l'ajout d'un livre
+    //Fonction qui permet d'ajouter un livre
     public function ajoutLivreValidation(){
         //On insère l'information de l'image dans la variable $file
         $file = $_FILES['image'];//=> possibilité de faire echo "<pre>"; print_r($file) echo "</pre>"; pour visualiser les info d'une image
@@ -90,6 +90,45 @@ class LivresController{
         //l'image qui aura été rajouté dans le dossier
         else return ($random."_".$file['name']);
 
+    }
+
+    //Fonction qui permet de supprimer un livre
+    public function supprimerUnLivre($id){
+        //On commence par récupérer l'image avec le bon id
+        $nomImage = $this->livreManager->getLivreById($id)->getImage();
+        //On supprime l'image dans le repertoire concerné avec la fonction unlink()
+        unlink("public/images/".$nomImage);
+        //On supprime l'image en BDD
+        $this->livreManager->suppressionLivreBdd($id);
+        header('Location: '. URL . 'livres');
+    }
+
+    //Fonction qui permet d'afficher la page de modification d'un livre
+    public function modifierUnLivre($id){
+        $livre = $this->livreManager->getLivreById($id);
+        //On appelle directement la view à modifierUnLivre
+        require "views/modifierLivre.view.php";
+    }
+
+    //Fonction qui permet de modifier un livre
+    public function modificationLivreValidation(){
+        //On récupère le bon livre (grace à l'input de name="identifiant" dans modifierLivre.view)
+        $imageActuelle = $this->livreManager->getLivreById($_POST['identifiant'])->getImage();
+        $file = $_FILES['image'];
+        //On test si la taille de l'image est > 0, si c'est le cas, alors c'est que l'on souhaite 
+        // modifier l'image
+        if($_FILES['size'] > 0){
+            //On supprime l'image en cours
+            unlink("public/images/".$imageActuelle);
+            //On ajoute l'image dans le repertoire
+            $repertoire = "public/images/";
+            $imagePourAjout = $this->ajoutImage($file, $repertoire);
+        } else {
+            //sinon il s'agit de la même image qu'avant
+            $imagePourAjout = $imageActuelle;
+        }
+        $this->livreManager->modificationLivreBdd($_POST['identifiant'], $_POST['titre'], $_POST['nbPages'], $imagePourAjout);
+        header('Location: '. URL . 'livres');
     }
 
 }

@@ -32,10 +32,14 @@ try{
                     $livresController->afficherUnLivre($url[2]);
                 } else if($url[1]==="a"){
                     $livresController->ajouterUnLivre();
+                }  else if($url[1]==="m"){
+                    $livresController->modifierUnLivre($url[2]);
                 } else if($url[1]==="s"){
-                    echo "supprimer un livre";
+                    $livresController->supprimerUnLivre($url[2]);
                 }  else if($url[1]==="av"){
                     $livresController->ajoutLivreValidation();
+                } else if($url[1]==="mv"){
+                    $livresController->modificationLivreValidation();
                 } else {
                     throw new Exception("La page n'existe pas");
                 }
