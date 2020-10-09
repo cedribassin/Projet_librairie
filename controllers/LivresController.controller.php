@@ -20,6 +20,8 @@ class LivresController{
         //On récupère tous les livres qu'on met ensuite dans l'attribut $livres
         $livres = $this->livreManager->getLivres();
         require "views/livres.view.php";
+        //On vide la variable alerte (dans livre.view)
+        unset($_SESSION['alert']);
     }
 
     //Fonction qui permet de récupérer un livre
@@ -28,6 +30,7 @@ class LivresController{
       $livre = $this->livreManager->getLivreById($id);
       //Necessite un nouvel affichage réalisé dans afficherUnLivre.view.php
       require "views/afficherUnLivre.view.php";
+      
     }
 
     //Fonction qui permet d'accéder à la page d'ajout d'un livre
@@ -43,6 +46,10 @@ class LivresController{
         $imageAjoute = $this->ajoutImage($file, $repertoire);
         //On l'insère dans aussi en BDD
         $this->livreManager->ajoutLivreBdd($_POST['titre'], $_POST['nbPages'], $imageAjoute);
+        $_SESSION['alert']=[
+            "type"=>"success",// => determine la couleur de l'alerte
+            "msg"=>"Ajout réalisé"
+        ];
         //On redirige l'utilisateur vers la page listant tous les livres
         header('Location: '. URL . 'livres');
     }
@@ -100,6 +107,10 @@ class LivresController{
         unlink("public/images/".$nomImage);
         //On supprime l'image en BDD
         $this->livreManager->suppressionLivreBdd($id);
+        $_SESSION['alert']=[
+            "type"=>"success",// => determine la couleur de l'alerte
+            "msg"=>"Suppression réalisé"
+        ];
         header('Location: '. URL . 'livres');
     }
 
@@ -117,7 +128,7 @@ class LivresController{
         $file = $_FILES['image'];
         //On test si la taille de l'image est > 0, si c'est le cas, alors c'est que l'on souhaite 
         // modifier l'image
-        if($_FILES['size'] > 0){
+        if($file['size'] > 0){
             //On supprime l'image en cours
             unlink("public/images/".$imageActuelle);
             //On ajoute l'image dans le repertoire
@@ -128,6 +139,10 @@ class LivresController{
             $imagePourAjout = $imageActuelle;
         }
         $this->livreManager->modificationLivreBdd($_POST['identifiant'], $_POST['titre'], $_POST['nbPages'], $imagePourAjout);
+        $_SESSION['alert']=[
+            "type"=>"success",// => determine la couleur de l'alerte
+            "msg"=>"Modification réalisé"
+        ];
         header('Location: '. URL . 'livres');
     }
 

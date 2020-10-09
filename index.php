@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // On définit une constante de nom "URL" qui aura pour valeur:
 // str_replace("index.php","", (isset($_SERVER['HTTPS']) ? "https" : "http")."://$_SERVER[HTTP_HOST]$_SERVER[PHP_SELF]"));
 // => dans str_replace:
@@ -49,7 +51,8 @@ try{
         }
     }
 } catch(Exception $e){
-    echo $e->getMessage();
+    $msg =  $e->getMessage();
+    require "views/error.view.php";
 }
 
 ?>
